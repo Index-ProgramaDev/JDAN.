@@ -1,0 +1,150 @@
+:root {
+--bgcolor: #1C1E1F;
+--green: #70EA58;
+--yellow: #FFD138;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: white;
+  cursor: url('/cursor.cur'), auto;
+}
+
+a, button {
+  cursor: url('/pixel-link.cur'), pointer;
+}
+
+.glitch {
+  animation: glitch-effect 0.3s steps(2, end);
+}
+
+.photo-glitch {
+  isolation: isolate;
+}
+.photo-base,
+.photo-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+} 
+
+.photo-base {
+  z-index: 1;
+ 
+  animation: photo-enter 0.25s ease;
+}
+.photo-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.is-glitching .photo-layer {
+  visibility: visible;
+}
+
+.photo-red {
+  filter: grayscale(1) sepia(1) saturate(10000%) hue-rotate(315deg);
+}
+
+.photo-green {
+  filter: grayscale(1) sepia(1) saturate(10000%) hue-rotate(85deg);
+}
+
+.photo-blue {
+  filter: grayscale(1) sepia(1) saturate(10000%) hue-rotate(190deg);
+}
+
+.is-glitching .photo-red {
+  opacity: 0.85;
+  animation: glitch-red 0.38s steps(2, end);
+}
+
+.is-glitching .photo-green {
+  opacity: 0.75;
+  animation: glitch-green 0.38s steps(2, end);
+}
+
+.is-glitching .photo-blue {
+  opacity: 0.8;
+  animation: glitch-blue 0.38s steps(2, end);
+}
+
+@keyframes glitch-red {
+  0%, 100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(0);
+  }
+  20% {
+    clip-path: inset(15% 0 65% 0);
+    transform: translateX(-7px);
+  }
+  50% {
+    clip-path: inset(55% 0 20% 0);
+    transform: translateX(6px);
+  }
+  75% {
+    clip-path: inset(35% 0 40% 0);
+    transform: translateX(-4px);
+  }
+}
+
+@keyframes glitch-green {
+  0%, 100% {
+    clip-path: inset(0);
+    transform: translateX(0);
+  }
+  25% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translateX(6px);
+  }
+  55% {
+    clip-path: inset(20% 0 55% 0);
+    transform: translateX(-5px);
+  }
+  80% {
+    clip-path: inset(75% 0 5% 0);
+    transform: translateX(3px);
+  }
+}
+
+@keyframes glitch-blue {
+  0%, 100% {
+    clip-path: inset(0);
+    transform: translateX(0);
+  }
+  15% {
+    clip-path: inset(45% 0 35% 0);
+    transform: translateX(8px);
+  }
+  45% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translateX(-6px);
+  }
+  70% {
+    clip-path: inset(65% 0 15% 0);
+    transform: translateX(5px);
+  }
+}
+
+@keyframes photo-enter {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
