@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { CSSProperties } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { FaArrowLeft, FaHome } from "react-icons/fa";
-import Navbar from "./components/Navbar";
 import Notf from './assets/Notf.png';
 
 const NOME = "João";
@@ -32,12 +31,15 @@ export default function NotFound() {
 
   return (
     <div style={{ "--green": "#A3E635" } as CSSProperties} className="flex min-h-screen flex-col overflow-x-hidden bg-[#1B1D1F] font-['Inter'] text-white">
-      <Navbar />
-      <main className="mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-12 px-6 pb-20 pt-6 md:px-10 lg:grid-cols-12 lg:gap-8">
-        
-        {/* FOTO + BALÃO DE FALA */}
+      <main className="mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-12 px-6 pb-20 pt-16 md:px-10 lg:grid-cols-12 lg:gap-8">
         <div className="order-first flex justify-center lg:order-last lg:col-span-5">
-          <motion.div initial={{ opacity: 0, y: reduce ? 0 : 40, rotate: reduce ? 3 : -8 }} animate={{ opacity: 1, y: 0, rotate: 3 }} whileHover={reduce ? undefined : { rotate: 0 }} transition={{ duration: reduce ? 0 : 0.9, delay: reduce ? 0 : 0.2, ease: EASE }} className="relative w-full max-w-[260px] sm:max-w-[320px]">
+          <motion.div
+            initial={{ opacity: 0, y: reduce ? 0 : 40, rotate: reduce ? 3 : -8 }}
+            animate={{ opacity: 1, y: 0, rotate: 3 }}
+            whileHover={reduce ? undefined : { rotate: 0 }}
+            transition={{ duration: reduce ? 0 : 0.9, delay: reduce ? 0 : 0.2, ease: EASE }}
+            className="relative w-full max-w-[260px] sm:max-w-[320px]"
+          >
             <div className="absolute inset-0 translate-x-4 translate-y-4 rounded-[2rem] bg-[var(--green)]" aria-hidden />
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/10 bg-[#2F3134]">
               {Notf ? (
@@ -49,19 +51,28 @@ export default function NotFound() {
                 </div>
               )}
             </div>
-
-            <motion.div initial={{ opacity: 0, scale: reduce ? 1 : 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 18, delay: reduce ? 0 : 1 }} style={{ originX: 1, originY: 1 }} className="absolute -left-2 top-4 max-w-[200px] rounded-2xl rounded-br-sm bg-white px-4 py-3 text-sm font-medium leading-snug text-black shadow-[0_12px_30px_rgba(0,0,0,0.35)] sm:-left-14 sm:max-w-[230px]">
+            <motion.div
+              initial={{ opacity: 0, scale: reduce ? 1 : 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18, delay: reduce ? 0 : 1 }}
+              style={{ originX: 1, originY: 1 }}
+              className="absolute -left-2 top-4 max-w-[200px] rounded-2xl rounded-br-sm bg-white px-4 py-3 text-sm font-medium leading-snug text-black shadow-[0_12px_30px_rgba(0,0,0,0.35)] sm:-left-14 sm:max-w-[230px]"
+            >
               {frase}
             </motion.div>
           </motion.div>
         </div>
 
-        {/* TEXTO E AÇÕES */}
         <div className="lg:col-span-7">
           <h1 aria-label="Erro 404" className="flex select-none text-[clamp(6rem,24vw,16rem)] font-light leading-[0.9] tracking-tighter">
             {["4", "0", "4"].map((d, i) => (
               <span key={i} className="inline-block overflow-hidden pb-[0.06em]" aria-hidden>
-                <motion.span className="block" initial={{ y: reduce ? "0%" : "110%" }} animate={{ y: "0%" }} transition={{ duration: reduce ? 0 : 0.9, delay: reduce ? 0 : i * 0.12, ease: EASE }}>
+                <motion.span
+                  className="block"
+                  initial={{ y: reduce ? "0%" : "110%" }}
+                  animate={{ y: "0%" }}
+                  transition={{ duration: reduce ? 0 : 0.9, delay: reduce ? 0 : i * 0.12, ease: EASE }}
+                >
                   {d}
                 </motion.span>
               </span>
@@ -89,7 +100,6 @@ export default function NotFound() {
             </button>
           </motion.div>
         </div>
-
       </main>
     </div>
   );

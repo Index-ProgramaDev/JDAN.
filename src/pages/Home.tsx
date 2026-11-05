@@ -13,26 +13,24 @@ import WhatsappIcon from "../assets/icons/whatsapp.svg";
 const fotos = [MinhaFoto1, MinhaFoto2, MinhaFoto3];
 
 const redes = [
-  { label: "Instagram", href: "#", icon: InstagramIcon },
-  { label: "LinkedIn", href: "#", icon: LinkedinIcon },
-  { label: "GitHub", href: "#", icon: GithubIcon },
-  { label: "WhatsApp", href: "#", icon: WhatsappIcon },
+  { label: "Instagram", href: "https://www.instagram.com/bernardo.devcode?utm_source=ig_web_button_share_sheet&dlrf=ZDNlZDc0MzIxNw==", icon: InstagramIcon },
+  { label: "LinkedIn",  href: "https://www.linkedin.com/in/daniel-bernardo-15b974359", icon: LinkedinIcon },
+  { label: "GitHub",    href: "https://github.com/index-programadev", icon: GithubIcon },
+  { label: "WhatsApp",  href: "https://wa.me/5581998714983", target: "_blank", icon: WhatsappIcon },
 ];
 
-/** TRAJETÓRIA*/
 type Milestone = { year: string; title: string; description: string };
+
 const journey: Milestone[] = [
-  { year: "2025", title: "Primeiros passos", description: "Início dos estudos em desenvolvimento web, HTML, CSS e JavaScript pelo Senac PE." },
-  { year: "11/12/2025", title: "Projetos freelance", description: "Primeiras entregas como desenvolvedor autônomo, construindo aplicações para clientes." },
-  { year: "2026", title: "Fullstack", description: "Consolidação de arquitetura, Frameworks e Mobile" },
-  { year: "Hoje", title: "Mobile", description: "Em constante aprendizado, lado a lado com o erro - mas na mira do sucesso>)" },
+  { year: "2025",        title: "Primeiros passos",   description: "Início dos estudos em desenvolvimento web, HTML, CSS e JavaScript pelo Senac PE." },
+  { year: "11/12/2025",  title: "Projetos freelance", description: "Primeiras entregas como desenvolvedor autônomo, construindo aplicações para clientes." },
+  { year: "2026",        title: "Fullstack",           description: "Consolidação de arquitetura, Frameworks e Mobile" },
+  { year: "Hoje",        title: "Mobile",              description: "Em constante aprendizado, lado a lado com o erro - mas na mira do sucesso>)" },
 ];
 
-/** CTA / CONTATO */
 const CONTACT_URL = "https://wa.me/";
 
-/** BALANÇO LEVE EM LOOP: envolve um elemento e o faz balançar de leve (rotação + subida/descida).
- *  Fica por fora do elemento para não brigar com os hovers em CSS dele. */
+// Wrapper de animação de balanço suave em loop
 function Sway({
   children, className = "", rotate = 1.2, y = 3, duration = 5, delay = 0, origin = "50% 50%",
 }: { children: ReactNode; className?: string; rotate?: number; y?: number; duration?: number; delay?: number; origin?: string }) {
@@ -54,7 +52,7 @@ export default function Home({ start = true }: { start?: boolean }) {
   const [ctaActive, setCtaActive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Troca de foto + glitch
+  // Troca de foto com efeito glitch a cada 3 s
   useEffect(() => {
     let trocarFoto: number;
     let encerrarGlitch: number;
@@ -66,27 +64,27 @@ export default function Home({ start = true }: { start?: boolean }) {
     return () => { window.clearInterval(interval); window.clearTimeout(trocarFoto); window.clearTimeout(encerrarGlitch); };
   }, []);
 
-  // Scroll driver
+  // Scroll-driven animations mapeadas ao progresso da página
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
-  // HeroExit
-  const heroTextOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
-  const heroTextY = useTransform(scrollYProgress, [0, 0.12], [0, -70]);
-  const arrowOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  // PhotoStay
-  const photoScale = useTransform(scrollYProgress, [0, 0.22, 0.5, 1], [1, 1, 0.75, 0.75]);
-  const photoX = useTransform(scrollYProgress, [0, 0.22, 0.5, 1], [0, 0, 50, 50]);
-  // JourneyReveal
-  const timelineOpacity = useTransform(scrollYProgress, [0.18, 0.32], [0, 1]);
-  const lineProgress = useTransform(scrollYProgress, [0.25, 0.68], [0, 1]);
-  // CTAReveal
-  const ctaOpacity = useTransform(scrollYProgress, [0.72, 0.9], [0, 1]);
-  const ctaY = useTransform(scrollYProgress, [0.72, 0.9], [50, 0]);
 
-  // Eventos (HeroExit, PhotoStay, ... ScrollReverse)
+  const heroTextOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+  const heroTextY       = useTransform(scrollYProgress, [0, 0.12], [0, -70]);
+  const arrowOpacity    = useTransform(scrollYProgress, [0, 0.1],  [1, 0]);
+  const photoScale      = useTransform(scrollYProgress, [0, 0.22, 0.5, 1], [1, 1, 0.75, 0.75]);
+  const photoX          = useTransform(scrollYProgress, [0, 0.22, 0.5, 1], [0, 0, 50, 50]);
+  const timelineOpacity = useTransform(scrollYProgress, [0.18, 0.32], [0, 1]);
+  const lineProgress    = useTransform(scrollYProgress, [0.25, 0.68], [0, 1]);
+  const ctaOpacity      = useTransform(scrollYProgress, [0.72, 0.9], [0, 1]);
+  const ctaY            = useTransform(scrollYProgress, [0.72, 0.9], [50, 0]);
+
+  // Dispara CustomEvents para sincronizar componentes externos com a posição de scroll
   useEffect(() => {
     const thresholds: { name: string; at: number }[] = [
-      { name: "HeroExit", at: 0.12 }, { name: "JourneyReveal", at: 0.25 }, { name: "MilestoneReveal", at: 0.35 },
-      { name: "JourneyComplete", at: 0.7 }, { name: "CTAReveal", at: 0.85 },
+      { name: "HeroExit",       at: 0.12 },
+      { name: "JourneyReveal",  at: 0.25 },
+      { name: "MilestoneReveal", at: 0.35 },
+      { name: "JourneyComplete", at: 0.7  },
+      { name: "CTAReveal",      at: 0.85 },
     ];
     let last = 0;
     const fired = new Set<string>();
@@ -94,7 +92,7 @@ export default function Home({ start = true }: { start?: boolean }) {
     emit("PhotoStay");
     emit("SocialStay");
     const unsub = scrollYProgress.on("change", (v) => {
-      // Reversão: ao subir, reabre os eventos para disparar novamente
+      // Ao rolar para cima, limpa os eventos disparados para permitir re-trigger
       if (v < last - 0.03 && v > 0.02) { emit("ScrollReverse"); fired.clear(); }
       for (const t of thresholds) if (v >= t.at && !fired.has(t.name)) { fired.add(t.name); emit(t.name); }
       last = v;
@@ -108,14 +106,16 @@ export default function Home({ start = true }: { start?: boolean }) {
     <div ref={containerRef} className="relative h-[400vh] max-lg:!h-auto">
       <section className="sticky top-0 flex h-screen flex-col overflow-hidden bg-[#1B1D1F] bg-[linear-gradient(to_bottom,transparent_0%,transparent_50%,rgba(47,49,52,0.5)_80%,#2F3134_100%)] font-['Inter'] text-white max-lg:!relative max-lg:!top-auto max-lg:!h-auto max-lg:!min-h-[100svh]">
         <Navbar />
-        {/* DECORAÇÃO DIREITA (LOOP: flutua devagar) */}
+
+        {/* Decoração lateral direita — oculta no mobile */}
         <motion.div
           aria-hidden="true"
           animate={{ y: [0, -24, 0] }}
           transition={{ duration: 9, ease: "easeInOut", repeat: Infinity }}
           className="absolute -right-16 top-[45%] h-full w-[200px] rounded-full bg-[linear-gradient(to_bottom,#2c2c2c,#232425)] max-lg:!hidden"
         />
-        {/* HERO */}
+
+        {/* Hero grid: texto esquerdo / foto / texto direito */}
         <motion.div
           id="principal"
           initial={{ opacity: 0, y: 24 }}
@@ -123,14 +123,15 @@ export default function Home({ start = true }: { start?: boolean }) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-10 px-10 py-16 lg:grid-cols-3 max-lg:!gap-8 max-lg:!px-6 max-lg:!py-10"
         >
-          {/* ESQUERDA */}
+          {/* Coluna esquerda */}
           <motion.div style={{ opacity: heroTextOpacity, y: heroTextY }} className="self-start max-lg:!opacity-100 max-lg:!transform-none max-lg:!text-center">
             <div className="-translate-x-[40%] translate-y-[8pc] max-lg:!translate-x-0 max-lg:!translate-y-0">
               <Sway origin="0% 50%" className="w-fit max-lg:!mx-auto"><p className="text-[2.6rem] max-lg:!text-[1.4rem]">Olá! Eu sou</p></Sway>
               <Sway origin="0% 50%" delay={0.5} rotate={1.6} y={4} className="w-fit max-lg:!mx-auto"><p className="ml-5 w-fit origin-left cursor-default whitespace-nowrap text-[3.6rem] font-medium text-[#F472B6] transition-transform duration-300 hover:-rotate-2 hover:scale-105 max-lg:!ml-0 max-lg:!mx-auto max-lg:!whitespace-normal max-lg:!text-[2rem]">João Daniel.</p></Sway>
             </div>
           </motion.div>
-          {/* FOTO E SETA */}
+
+          {/* Coluna central: foto com glitch e seta decorativa */}
           <div className="relative mx-auto max-lg:!mx-0 max-lg:!flex max-lg:!justify-center">
             <motion.svg
               style={{ opacity: arrowOpacity }}
@@ -139,7 +140,7 @@ export default function Home({ start = true }: { start?: boolean }) {
               viewBox="0 0 320 110" fill="none" stroke="white" strokeWidth="1.2" strokeLinecap="round"
             >
               <path d="M20 12 L29 5 L38 12" strokeLinejoin="round" />
-              {/* LOOP: tracejado "andando" em direção à foto */}
+              {/* Tracejado animado percorrendo a curva em direção à foto */}
               <motion.path
                 d="M30 20 C15 48 38 76 66 83 C96 91 117 68 143 48 C169 28 193 12 219 9 C245 6 265 19 282 32 C296 43 307 37 60 "
                 strokeDasharray="10 11"
@@ -147,10 +148,9 @@ export default function Home({ start = true }: { start?: boolean }) {
                 transition={{ duration: 3, ease: "linear", repeat: Infinity }}
               />
             </motion.svg>
+
             <motion.div style={{ scale: photoScale, x: photoX }} className="relative max-lg:!transform-none">
-              {/* div comum carrega as classes de transform do Tailwind; o motion fica por dentro */}
               <div className="relative w-fit scale-90 -translate-x-[20%] max-lg:!translate-x-0">
-                {/* LOOP: flutua | HOVER: cresce */}
                 <motion.div
                   animate={{ y: [0, -12, 0], rotate: [-1.5, 1.5, -1.5] }}
                   whileHover={{ scale: 1.04 }}
@@ -167,7 +167,8 @@ export default function Home({ start = true }: { start?: boolean }) {
               </div>
             </motion.div>
           </div>
-          {/* DIREITA */}
+
+          {/* Coluna direita */}
           <motion.div style={{ opacity: heroTextOpacity, y: heroTextY }} className="self-start lg:justify-self-end max-lg:!opacity-100 max-lg:!transform-none max-lg:!self-center max-lg:!text-center">
             <div className="max-w-sm translate-y-[2.5pc] max-lg:!translate-y-0 max-lg:!mx-auto">
               <Sway origin="0% 50%" delay={0.3} className="w-fit max-lg:!mx-auto"><p className="text-[2.5rem] max-lg:!text-[1.4rem]">Dev</p></Sway>
@@ -179,15 +180,17 @@ export default function Home({ start = true }: { start?: boolean }) {
             </div>
           </motion.div>
         </motion.div>
-        {/* TIMELINE (esquerda) */}
+
+        {/* Timeline de trajetória — posicionada absolutamente no desktop */}
         <motion.div style={{ opacity: timelineOpacity }} className="pointer-events-none absolute z-20 left-[5%] top-[16%] bottom-[20%] w-[42%] lg:w-[30%] max-lg:!static max-lg:!left-auto max-lg:!top-auto max-lg:!bottom-auto max-lg:!w-full max-lg:!opacity-100 max-lg:!pointer-events-auto max-lg:!px-6 max-lg:!py-8" aria-hidden={false}>
           <JourneyTimeline lineProgress={lineProgress} scrollYProgress={scrollYProgress} />
         </motion.div>
-        {/* CTA (direita) */}
+
+        {/* CTA de contato — aparece na última seção do scroll */}
         <motion.div style={{ opacity: ctaOpacity, y: ctaY }} className={`absolute z-20 right-[5%] top-1/2 w-[42%] -translate-y-1/2 text-left lg:w-[30%] ${ctaActive ? "" : "pointer-events-none"} max-lg:!static max-lg:!right-auto max-lg:!top-auto max-lg:!translate-y-0 max-lg:!w-full max-lg:!opacity-100 max-lg:!transform-none max-lg:!pointer-events-auto max-lg:!px-6 max-lg:!py-8 max-lg:!text-center`}>
           <Sway rotate={0.8} y={4} delay={0.3}><h2 className="text-[2.2rem] font-medium leading-tight lg:text-[2.6rem] max-lg:!text-[1.6rem]">Tem um projeto em mente?</h2></Sway>
           <Sway rotate={0.5} y={3} delay={0.9}><p className="mt-4 text-[1.05rem] leading-snug text-white/70 lg:text-[1.2rem] max-lg:!text-[0.95rem]">Vamos conversar e transformar sua ideia em realidade.</p></Sway>
-          {/* LOOP: pulso rosa chamando atenção | HOVER: cresce */}
+          {/* Botão com pulso animado para chamar atenção */}
           <motion.a
             href={CONTACT_URL}
             target="_blank"
@@ -201,7 +204,8 @@ export default function Home({ start = true }: { start?: boolean }) {
             Vamos conversar
           </motion.a>
         </motion.div>
-        {/* REDES SOCIAIS (LOOP: onda de pulinhos | HOVER: cresce e inclina) */}
+
+        {/* Redes sociais com animação de onda escalonada */}
         <div className="absolute bottom-16 left-[5%] flex items-center gap-8 max-lg:!static max-lg:!mt-8 max-lg:!justify-center max-lg:!gap-6 max-lg:!px-6">
           {redes.map((r, i) => (
             <motion.a
@@ -222,14 +226,14 @@ export default function Home({ start = true }: { start?: boolean }) {
             </motion.a>
           ))}
         </div>
-        {/* CRÉDITO */}
+
         <p className="absolute bottom-[12%] right-[20%] text-right font-['Leckerli_One'] text-[1.7rem] text-white/30 transition-colors duration-300 hover:text-white/60 max-lg:!static max-lg:!mt-6 max-lg:!text-center max-lg:!pb-8 max-lg:!text-[1.1rem]">Design e código por:<br />@Bernardo.devcode</p>
       </section>
     </div>
   );
 }
 
-/** Timeline minimalista: linha SVG */
+// Timeline minimalista com linha SVG animada por scroll
 function JourneyTimeline({ lineProgress, scrollYProgress }: { lineProgress: MotionValue<number>; scrollYProgress: MotionValue<number> }) {
   return (
     <div className="relative flex h-full flex-col justify-between py-4 pl-8 max-lg:!h-auto max-lg:!justify-start max-lg:!gap-8 max-lg:!py-6 max-lg:!pl-10">
@@ -243,22 +247,22 @@ function JourneyTimeline({ lineProgress, scrollYProgress }: { lineProgress: Moti
 }
 
 function MilestoneItem({ index, total, milestone, scrollYProgress }: { index: number; total: number; milestone: Milestone; scrollYProgress: MotionValue<number> }) {
-  // Cada marco entra conforme a linha o alcança
-  const start = 0.25 + (index / Math.max(total - 1, 1)) * 0.4;
+  // Cada marco entra conforme a linha SVG o alcança no scroll
+  const start   = 0.25 + (index / Math.max(total - 1, 1)) * 0.4;
   const opacity = useTransform(scrollYProgress, [start - 0.04, start + 0.02], [0, 1]);
-  const x = useTransform(scrollYProgress, [start - 0.04, start + 0.02], [-24, 0]);
-  const isLast = index === total - 1;
+  const x       = useTransform(scrollYProgress, [start - 0.04, start + 0.02], [-24, 0]);
+  const isLast  = index === total - 1;
+
   return (
     <motion.div style={{ opacity, x }} className="relative max-lg:!opacity-100 max-lg:!transform-none">
-      {/* HOVER: o marco desliza, o título fica rosa e a bolinha cresce (o pointer-events-auto libera o hover no desktop) */}
       <div className="group pointer-events-auto relative cursor-default transition-transform duration-300 hover:translate-x-2">
-        {/* LOOP: o marco "Hoje" pulsa */}
+        {/* Indicador pulsante no último marco */}
         {isLast && <span className="absolute -left-[26px] top-[6px] h-3 w-3 animate-ping rounded-full bg-[#F472B6]/60" aria-hidden="true" />}
         <span className="absolute -left-[26px] top-[6px] h-3 w-3 rounded-full bg-[#F472B6] shadow-[0_0_0_4px_rgba(244,114,182,0.15)] transition-transform duration-300 group-hover:scale-125" />
         <Sway rotate={0} y={3} duration={4.5} delay={index * 0.7}>
-        <p className="text-[0.7rem] uppercase tracking-[0.25em] text-white/40">{milestone.year}</p>
-        <p className="mt-1 text-[1.05rem] font-medium text-white transition-colors duration-300 group-hover:text-[#F472B6]">{milestone.title}</p>
-        <p className="mt-1 text-[0.88rem] leading-snug text-white/60">{milestone.description}</p>
+          <p className="text-[0.7rem] uppercase tracking-[0.25em] text-white/40">{milestone.year}</p>
+          <p className="mt-1 text-[1.05rem] font-medium text-white transition-colors duration-300 group-hover:text-[#F472B6]">{milestone.title}</p>
+          <p className="mt-1 text-[0.88rem] leading-snug text-white/60">{milestone.description}</p>
         </Sway>
       </div>
     </motion.div>

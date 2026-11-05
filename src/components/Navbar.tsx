@@ -7,25 +7,20 @@ const LINKS = [
   { label: "Blog", to: "/blogs" },
 ];
 
-// Troque pelo seu número (com DDI + DDD, só números)
-const WHATSAPP = "https://wa.me/5581999999999";
+const WHATSAPP = "https://wa.me/5581998714983";
 
 export default function Navbar() {
   const { pathname } = useLocation();
 
   return (
     <nav className="sticky top-0 z-[8888] flex flex-wrap items-center justify-between gap-y-4 border-b border-white/10 bg-[#1C1E1F] px-6 py-4 md:px-12 lg:h-24 lg:flex-nowrap lg:px-16 lg:py-0 xl:px-[8rem]">
-
-      {/* LOGO */}
       <h1 className="cursor-pointer text-[2rem] text-[var(--green)] transition-transform duration-300 hover:scale-105 sm:text-[2.4rem] lg:text-[2.8rem]">
         <Link to="/">J<span className="text-white">Dan.</span></Link>
       </h1>
 
-      {/* LINKS DE NAVEGAÇÃO */}
       <ul className="order-3 flex w-full items-center justify-between rounded-full border border-white/10 bg-white/5 px-4 py-2 sm:px-6 sm:py-3 lg:order-none lg:w-auto lg:justify-start lg:gap-16 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 xl:gap-[14rem]">
         {LINKS.map(({ label, to }) => {
           const ativo = pathname === to;
-
           return (
             <li key={to}>
               <Link
@@ -40,7 +35,6 @@ export default function Navbar() {
         })}
       </ul>
 
-      {/* BOTÃO DE CONTATO */}
       <a
         href={WHATSAPP}
         target="_blank"
