@@ -11,6 +11,8 @@
     font-family: 'Inter', sans-serif;
     color: white;
   cursor: url('/cursor.cur'), auto;
+   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 a, button {
@@ -146,5 +148,15 @@ a, button {
   }
   to {
     opacity: 1;
+  }
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem; /* altura da navbar (h-24), para âncoras não ficarem escondidas */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

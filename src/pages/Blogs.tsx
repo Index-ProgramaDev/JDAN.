@@ -43,7 +43,7 @@ export default function Blogs({ start = true }: { start?: boolean }) {
             </svg>
           </div>
 
-          <h3 className="mt-6 text-xl font-semibold text-white">Nada por aqui ainda...</h3>
+          <h3 className="mt-6 text-xl font-semibold text-[var(--yellow)]">Nada por aqui ainda...</h3>
           <p className="mt-2 text-sm leading-relaxed text-white/60 sm:text-base">
             Estou preparando conteúdos incríveis sobre desenvolvimento Fullstack, arquitetura de software e boas práticas. Volte em breve ou cadastre-se para ser avisado! ;)
           </p>

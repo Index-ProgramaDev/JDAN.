@@ -14,7 +14,7 @@ export default function Navbar() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="flex flex-wrap items-center justify-between gap-y-4 border-b border-white/10 px-6 py-4 md:px-12 lg:h-24 lg:flex-nowrap lg:px-16 lg:py-0 xl:px-[8rem]">
+    <nav className="sticky top-0 z-[8888] flex flex-wrap items-center justify-between gap-y-4 border-b border-white/10 bg-[#1C1E1F] px-6 py-4 md:px-12 lg:h-24 lg:flex-nowrap lg:px-16 lg:py-0 xl:px-[8rem]">
 
       {/* LOGO */}
       <h1 className="cursor-pointer text-[2rem] text-[var(--green)] transition-transform duration-300 hover:scale-105 sm:text-[2.4rem] lg:text-[2.8rem]">

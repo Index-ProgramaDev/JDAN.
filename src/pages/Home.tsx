@@ -1,27 +1,52 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import Navbar from "../components/Navbar";
 import MinhaFoto1 from "../assets/Eu.png";
 import MinhaFoto2 from "../assets/Eu2.png";
 import MinhaFoto3 from "../assets/Eu3.png";
-import InstagramIcon from "../assets/instagram.svg";
-import LinkedinIcon from "../assets/linkedin.svg";
-import GithubIcon from "../assets/github.svg";
-import WhatsappIcon from "../assets/whatsapp.svg";
+import InstagramIcon from "../assets/icons/instagram.svg";
+import LinkedinIcon from "../assets/icons/linkedin.svg";
+import GithubIcon from "../assets/icons/github.svg";
+import WhatsappIcon from "../assets/icons/whatsapp.svg";
 
 const fotos = [MinhaFoto1, MinhaFoto2, MinhaFoto3];
+
+const redes = [
+  { label: "Instagram", href: "#", icon: InstagramIcon },
+  { label: "LinkedIn", href: "#", icon: LinkedinIcon },
+  { label: "GitHub", href: "#", icon: GithubIcon },
+  { label: "WhatsApp", href: "#", icon: WhatsappIcon },
+];
 
 /** TRAJETÓRIA*/
 type Milestone = { year: string; title: string; description: string };
 const journey: Milestone[] = [
-  { year: "2022", title: "Primeiros passos", description: "Início dos estudos em desenvolvimento web, HTML, CSS e JavaScript." },
-  { year: "2023", title: "Projetos freelance", description: "Primeiras entregas como desenvolvedor autônomo, construindo aplicações para clientes." },
-  { year: "2024", title: "Fullstack", description: "Atuação com Node, React e TypeScript em aplicações seguras, rápidas e escaláveis." },
-  { year: "2025", title: "Mobile", description: "Desenvolvimento de APPS com Flutter e aplicação de boas práticas de código." },
+  { year: "2025", title: "Primeiros passos", description: "Início dos estudos em desenvolvimento web, HTML, CSS e JavaScript pelo Senac PE." },
+  { year: "11/12/2025", title: "Projetos freelance", description: "Primeiras entregas como desenvolvedor autônomo, construindo aplicações para clientes." },
+  { year: "2026", title: "Fullstack", description: "Consolidação de arquitetura, Frameworks e Mobile" },
+  { year: "Hoje", title: "Mobile", description: "Em constante aprendizado, lado a lado com o erro - mas na mira do sucesso>)" },
 ];
 
 /** CTA / CONTATO */
 const CONTACT_URL = "https://wa.me/";
+
+/** BALANÇO LEVE EM LOOP: envolve um elemento e o faz balançar de leve (rotação + subida/descida).
+ *  Fica por fora do elemento para não brigar com os hovers em CSS dele. */
+function Sway({
+  children, className = "", rotate = 1.2, y = 3, duration = 5, delay = 0, origin = "50% 50%",
+}: { children: ReactNode; className?: string; rotate?: number; y?: number; duration?: number; delay?: number; origin?: string }) {
+  return (
+    <motion.div
+      className={className}
+      style={{ transformOrigin: origin }}
+      animate={{ rotate: [0, rotate, 0, -rotate, 0], y: [0, -y, 0, -y, 0] }}
+      transition={{ duration, ease: "easeInOut", repeat: Infinity, delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function Home({ start = true }: { start?: boolean }) {
   const [fotoAtual, setFotoAtual] = useState(0);
@@ -83,8 +108,13 @@ export default function Home({ start = true }: { start?: boolean }) {
     <div ref={containerRef} className="relative h-[400vh] max-lg:!h-auto">
       <section className="sticky top-0 flex h-screen flex-col overflow-hidden bg-[#1B1D1F] bg-[linear-gradient(to_bottom,transparent_0%,transparent_50%,rgba(47,49,52,0.5)_80%,#2F3134_100%)] font-['Inter'] text-white max-lg:!relative max-lg:!top-auto max-lg:!h-auto max-lg:!min-h-[100svh]">
         <Navbar />
-        {/* DECORAÇÃO DIREITA */}
-        <div aria-hidden="true" className="absolute -right-16 top-[45%] h-full w-[200px] rounded-full bg-[linear-gradient(to_bottom,#2c2c2c,#232425)] max-lg:!hidden" />
+        {/* DECORAÇÃO DIREITA (LOOP: flutua devagar) */}
+        <motion.div
+          aria-hidden="true"
+          animate={{ y: [0, -24, 0] }}
+          transition={{ duration: 9, ease: "easeInOut", repeat: Infinity }}
+          className="absolute -right-16 top-[45%] h-full w-[200px] rounded-full bg-[linear-gradient(to_bottom,#2c2c2c,#232425)] max-lg:!hidden"
+        />
         {/* HERO */}
         <motion.div
           id="principal"
@@ -96,8 +126,8 @@ export default function Home({ start = true }: { start?: boolean }) {
           {/* ESQUERDA */}
           <motion.div style={{ opacity: heroTextOpacity, y: heroTextY }} className="self-start max-lg:!opacity-100 max-lg:!transform-none max-lg:!text-center">
             <div className="-translate-x-[40%] translate-y-[8pc] max-lg:!translate-x-0 max-lg:!translate-y-0">
-              <p className="text-[2.6rem] max-lg:!text-[1.4rem]">Olá! Eu sou</p>
-              <p className="ml-5 whitespace-nowrap text-[3.6rem] font-medium text-[#F472B6] max-lg:!ml-0 max-lg:!whitespace-normal max-lg:!text-[2rem]">João Daniel.</p>
+              <Sway origin="0% 50%" className="w-fit max-lg:!mx-auto"><p className="text-[2.6rem] max-lg:!text-[1.4rem]">Olá! Eu sou</p></Sway>
+              <Sway origin="0% 50%" delay={0.5} rotate={1.6} y={4} className="w-fit max-lg:!mx-auto"><p className="ml-5 w-fit origin-left cursor-default whitespace-nowrap text-[3.6rem] font-medium text-[#F472B6] transition-transform duration-300 hover:-rotate-2 hover:scale-105 max-lg:!ml-0 max-lg:!mx-auto max-lg:!whitespace-normal max-lg:!text-[2rem]">João Daniel.</p></Sway>
             </div>
           </motion.div>
           {/* FOTO E SETA */}
@@ -109,26 +139,43 @@ export default function Home({ start = true }: { start?: boolean }) {
               viewBox="0 0 320 110" fill="none" stroke="white" strokeWidth="1.2" strokeLinecap="round"
             >
               <path d="M20 12 L29 5 L38 12" strokeLinejoin="round" />
-              <path d="M30 20 C15 48 38 76 66 83 C96 91 117 68 143 48 C169 28 193 12 219 9 C245 6 265 19 282 32 C296 43 307 37 60 " strokeDasharray="10 11" />
+              {/* LOOP: tracejado "andando" em direção à foto */}
+              <motion.path
+                d="M30 20 C15 48 38 76 66 83 C96 91 117 68 143 48 C169 28 193 12 219 9 C245 6 265 19 282 32 C296 43 307 37 60 "
+                strokeDasharray="10 11"
+                animate={{ strokeDashoffset: [0, -42] }}
+                transition={{ duration: 3, ease: "linear", repeat: Infinity }}
+              />
             </motion.svg>
             <motion.div style={{ scale: photoScale, x: photoX }} className="relative max-lg:!transform-none">
-              <div className={`photo-glitch relative scale-90 -translate-x-[20%] aspect-square h-60 w-60 shrink-0 overflow-hidden rounded-full sm:h-80 sm:w-80 md:h-96 md:w-96 lg:h-[420px] lg:w-[420px] xl:h-[500px] xl:w-[500px] max-lg:!translate-x-0 ${glitch ? "is-glitching" : ""}`}>
-                <img key={fotoAtual} src={fotos[fotoAtual]} alt="João Daniel" className="photo-base" />
-                <img src={fotos[fotoAtual]} alt="" aria-hidden="true" className="photo-layer photo-red" />
-                <img src={fotos[fotoAtual]} alt="" aria-hidden="true" className="photo-layer photo-green" />
-                <img src={fotos[fotoAtual]} alt="" aria-hidden="true" className="photo-layer photo-blue" />
+              {/* div comum carrega as classes de transform do Tailwind; o motion fica por dentro */}
+              <div className="relative w-fit scale-90 -translate-x-[20%] max-lg:!translate-x-0">
+                {/* LOOP: flutua | HOVER: cresce */}
+                <motion.div
+                  animate={{ y: [0, -12, 0], rotate: [-1.5, 1.5, -1.5] }}
+                  whileHover={{ scale: 1.04 }}
+                  transition={{ y: { duration: 6, ease: "easeInOut", repeat: Infinity }, rotate: { duration: 7, ease: "easeInOut", repeat: Infinity }, scale: { type: "spring", stiffness: 200, damping: 18 } }}
+                  className="relative"
+                >
+                  <div className={`photo-glitch relative aspect-square h-60 w-60 shrink-0 overflow-hidden rounded-full sm:h-80 sm:w-80 md:h-96 md:w-96 lg:h-[420px] lg:w-[420px] xl:h-[500px] xl:w-[500px] ${glitch ? "is-glitching" : ""}`}>
+                    <img key={fotoAtual} src={fotos[fotoAtual]} alt="João Daniel" className="photo-base" />
+                    <img src={fotos[fotoAtual]} alt="" aria-hidden="true" className="photo-layer photo-red" />
+                    <img src={fotos[fotoAtual]} alt="" aria-hidden="true" className="photo-layer photo-green" />
+                    <img src={fotos[fotoAtual]} alt="" aria-hidden="true" className="photo-layer photo-blue" />
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
           {/* DIREITA */}
           <motion.div style={{ opacity: heroTextOpacity, y: heroTextY }} className="self-start lg:justify-self-end max-lg:!opacity-100 max-lg:!transform-none max-lg:!self-center max-lg:!text-center">
             <div className="max-w-sm translate-y-[2.5pc] max-lg:!translate-y-0 max-lg:!mx-auto">
-              <p className="text-[2.5rem] max-lg:!text-[1.4rem]">Dev</p>
-              <p className="ml-6 inline-block border-b border-[#7ED957] px-2 pb-2 text-[3rem] font-medium text-[#F5C518] max-lg:!ml-0 max-lg:!text-[1.8rem]">FULLSTACK</p>
-              <p className="mt-12 text-[22px] leading-snug max-lg:!mt-6 max-lg:!text-[15px]">
+              <Sway origin="0% 50%" delay={0.3} className="w-fit max-lg:!mx-auto"><p className="text-[2.5rem] max-lg:!text-[1.4rem]">Dev</p></Sway>
+              <Sway origin="0% 50%" delay={0.9} rotate={1.6} y={4} className="w-fit max-lg:!mx-auto"><p className="ml-6 inline-block cursor-default border-b border-[#7ED957] px-2 pb-2 text-[3rem] font-medium text-[#F5C518] transition-all duration-300 hover:scale-105 hover:border-[#F5C518] hover:tracking-wider max-lg:!ml-0 max-lg:!text-[1.8rem]">FULLSTACK</p></Sway>
+              <Sway rotate={0.5} y={5} duration={7} delay={1.4} className="mt-12 max-lg:!mt-6"><p className="text-[22px] leading-snug max-lg:!text-[15px]">
                 Eu sou João - Dev Fullstack. atuante no mercado freelance. Faço aplicações seguras, rápidas e
                 escaláveis com Node, React e Typescript. Construo APPS com Flutter e boas práticas de código ;)
-              </p>
+              </p></Sway>
             </div>
           </motion.div>
         </motion.div>
@@ -138,19 +185,45 @@ export default function Home({ start = true }: { start?: boolean }) {
         </motion.div>
         {/* CTA (direita) */}
         <motion.div style={{ opacity: ctaOpacity, y: ctaY }} className={`absolute z-20 right-[5%] top-1/2 w-[42%] -translate-y-1/2 text-left lg:w-[30%] ${ctaActive ? "" : "pointer-events-none"} max-lg:!static max-lg:!right-auto max-lg:!top-auto max-lg:!translate-y-0 max-lg:!w-full max-lg:!opacity-100 max-lg:!transform-none max-lg:!pointer-events-auto max-lg:!px-6 max-lg:!py-8 max-lg:!text-center`}>
-          <h2 className="text-[2.2rem] font-medium leading-tight lg:text-[2.6rem] max-lg:!text-[1.6rem]">Tem um projeto em mente?</h2>
-          <p className="mt-4 text-[1.05rem] leading-snug text-white/70 lg:text-[1.2rem] max-lg:!text-[0.95rem]">Vamos conversar e transformar sua ideia em realidade.</p>
-          <a href={CONTACT_URL} target="_blank" rel="noreferrer" className="mt-8 inline-block rounded-full bg-[#F472B6] px-8 py-3 font-medium text-white transition hover:scale-105 max-lg:!mt-6">Vamos conversar</a>
+          <Sway rotate={0.8} y={4} delay={0.3}><h2 className="text-[2.2rem] font-medium leading-tight lg:text-[2.6rem] max-lg:!text-[1.6rem]">Tem um projeto em mente?</h2></Sway>
+          <Sway rotate={0.5} y={3} delay={0.9}><p className="mt-4 text-[1.05rem] leading-snug text-white/70 lg:text-[1.2rem] max-lg:!text-[0.95rem]">Vamos conversar e transformar sua ideia em realidade.</p></Sway>
+          {/* LOOP: pulso rosa chamando atenção | HOVER: cresce */}
+          <motion.a
+            href={CONTACT_URL}
+            target="_blank"
+            rel="noreferrer"
+            animate={{ boxShadow: ["0 0 0 0 rgba(244,114,182,0.55)", "0 0 0 18px rgba(244,114,182,0)"] }}
+            whileHover={{ scale: 1.07 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ boxShadow: { duration: 1.8, ease: "easeOut", repeat: Infinity }, scale: { type: "spring", stiffness: 400, damping: 20 } }}
+            className="mt-8 inline-block rounded-full bg-[#F472B6] px-8 py-3 font-medium text-white max-lg:!mt-6"
+          >
+            Vamos conversar
+          </motion.a>
         </motion.div>
-        {/* REDES SOCIAIS */}
+        {/* REDES SOCIAIS (LOOP: onda de pulinhos | HOVER: cresce e inclina) */}
         <div className="absolute bottom-16 left-[5%] flex items-center gap-8 max-lg:!static max-lg:!mt-8 max-lg:!justify-center max-lg:!gap-6 max-lg:!px-6">
-          <a href="#" aria-label="Instagram" className="transition-transform hover:scale-110"><img src={InstagramIcon} alt="Instagram" className="h-12 w-12 max-lg:!h-10 max-lg:!w-10" /></a>
-          <a href="#" aria-label="LinkedIn" className="transition-transform hover:scale-110"><img src={LinkedinIcon} alt="LinkedIn" className="h-12 w-12 max-lg:!h-10 max-lg:!w-10" /></a>
-          <a href="#" aria-label="GitHub" className="transition-transform hover:scale-110"><img src={GithubIcon} alt="GitHub" className="h-12 w-12 max-lg:!h-10 max-lg:!w-10" /></a>
-          <a href="#" aria-label="WhatsApp" className="transition-transform hover:scale-110"><img src={WhatsappIcon} alt="WhatsApp" className="h-12 w-12 max-lg:!h-10 max-lg:!w-10" /></a>
+          {redes.map((r, i) => (
+            <motion.a
+              key={r.label}
+              href={r.href}
+              aria-label={r.label}
+              whileHover={{ scale: 1.2, rotate: -8 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+            >
+              <motion.img
+                src={r.icon}
+                alt={r.label}
+                className="h-12 w-12 max-lg:!h-10 max-lg:!w-10"
+                animate={{ y: [0, -7, 0] }}
+                transition={{ duration: 0.8, ease: "easeInOut", repeat: Infinity, repeatDelay: 3.2, delay: i * 0.25 }}
+              />
+            </motion.a>
+          ))}
         </div>
         {/* CRÉDITO */}
-        <p className="absolute bottom-[12%] right-[20%] text-right font-['Leckerli_One'] text-[1.7rem] text-white/30 max-lg:!static max-lg:!mt-6 max-lg:!text-center max-lg:!pb-8 max-lg:!text-[1.1rem]">Design e código por:<br />@Bernardo.devcode</p>
+        <p className="absolute bottom-[12%] right-[20%] text-right font-['Leckerli_One'] text-[1.7rem] text-white/30 transition-colors duration-300 hover:text-white/60 max-lg:!static max-lg:!mt-6 max-lg:!text-center max-lg:!pb-8 max-lg:!text-[1.1rem]">Design e código por:<br />@Bernardo.devcode</p>
       </section>
     </div>
   );
@@ -174,12 +247,20 @@ function MilestoneItem({ index, total, milestone, scrollYProgress }: { index: nu
   const start = 0.25 + (index / Math.max(total - 1, 1)) * 0.4;
   const opacity = useTransform(scrollYProgress, [start - 0.04, start + 0.02], [0, 1]);
   const x = useTransform(scrollYProgress, [start - 0.04, start + 0.02], [-24, 0]);
+  const isLast = index === total - 1;
   return (
     <motion.div style={{ opacity, x }} className="relative max-lg:!opacity-100 max-lg:!transform-none">
-      <span className="absolute -left-[26px] top-[6px] h-3 w-3 rounded-full bg-[#F472B6] shadow-[0_0_0_4px_rgba(244,114,182,0.15)]" />
-      <p className="text-[0.7rem] uppercase tracking-[0.25em] text-white/40">{milestone.year}</p>
-      <p className="mt-1 text-[1.05rem] font-medium text-white">{milestone.title}</p>
-      <p className="mt-1 text-[0.88rem] leading-snug text-white/60">{milestone.description}</p>
+      {/* HOVER: o marco desliza, o título fica rosa e a bolinha cresce (o pointer-events-auto libera o hover no desktop) */}
+      <div className="group pointer-events-auto relative cursor-default transition-transform duration-300 hover:translate-x-2">
+        {/* LOOP: o marco "Hoje" pulsa */}
+        {isLast && <span className="absolute -left-[26px] top-[6px] h-3 w-3 animate-ping rounded-full bg-[#F472B6]/60" aria-hidden="true" />}
+        <span className="absolute -left-[26px] top-[6px] h-3 w-3 rounded-full bg-[#F472B6] shadow-[0_0_0_4px_rgba(244,114,182,0.15)] transition-transform duration-300 group-hover:scale-125" />
+        <Sway rotate={0} y={3} duration={4.5} delay={index * 0.7}>
+        <p className="text-[0.7rem] uppercase tracking-[0.25em] text-white/40">{milestone.year}</p>
+        <p className="mt-1 text-[1.05rem] font-medium text-white transition-colors duration-300 group-hover:text-[#F472B6]">{milestone.title}</p>
+        <p className="mt-1 text-[0.88rem] leading-snug text-white/60">{milestone.description}</p>
+        </Sway>
+      </div>
     </motion.div>
   );
 }

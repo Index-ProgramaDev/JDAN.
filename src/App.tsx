@@ -4,7 +4,7 @@ import Intro from './pages/Intro';
 import Blogs from './pages/Blogs';
 import Servicos from './pages/Services';
 import Projetos from './pages/Projects';
-
+import NotFound from './Notfound';
 // Criando componentes 
 
 
@@ -13,6 +13,7 @@ export default function App() {
     <div>
       <Routes>
         <Route path="/" element={<Intro />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/home" element={<Home />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/servicos" element={<Servicos />} />
