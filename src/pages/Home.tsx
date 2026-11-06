@@ -6,7 +6,7 @@ import MinhaFoto1 from "../assets/Eu.png";
 import MinhaFoto2 from "../assets/Eu2.png";
 import MinhaFoto3 from "../assets/Eu3.png";
 import InstagramIcon from "../assets/icons/instagram.svg";
-import LinkedinIcon from "../assets/icons/linkedin.svg";
+import LinkedinIcon from "../assets/icons/Linkedin.svg";
 import GithubIcon from "../assets/icons/github.svg";
 import WhatsappIcon from "../assets/icons/whatsapp.svg";
 
@@ -46,7 +46,7 @@ function Sway({
   );
 }
 
-export default function Home({ start = true }: { start?: boolean }) {
+export default function Home({ start = true, showNav = true }: { start?: boolean; showNav?: boolean }) {
   const [fotoAtual, setFotoAtual] = useState(0);
   const [glitch, setGlitch] = useState(false);
   const [ctaActive, setCtaActive] = useState(false);
@@ -67,7 +67,7 @@ export default function Home({ start = true }: { start?: boolean }) {
   // Scroll-driven animations mapeadas ao progresso da página
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
 
-  const heroTextOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+  const heroTextOpacity = useTransform(scrollYProgress, [0, 0.12, 0.18], [1, 1, 0]);
   const heroTextY       = useTransform(scrollYProgress, [0, 0.12], [0, -70]);
   const arrowOpacity    = useTransform(scrollYProgress, [0, 0.1],  [1, 0]);
   const photoScale      = useTransform(scrollYProgress, [0, 0.22, 0.5, 1], [1, 1, 0.75, 0.75]);
@@ -105,7 +105,7 @@ export default function Home({ start = true }: { start?: boolean }) {
   return (
     <div ref={containerRef} className="relative h-[400vh] max-lg:!h-auto">
       <section className="sticky top-0 flex h-screen flex-col overflow-hidden bg-[#1B1D1F] bg-[linear-gradient(to_bottom,transparent_0%,transparent_50%,rgba(47,49,52,0.5)_80%,#2F3134_100%)] font-['Inter'] text-white max-lg:!relative max-lg:!top-auto max-lg:!h-auto max-lg:!min-h-[100svh]">
-        <Navbar />
+        {showNav && <Navbar />}
 
         {/* Decoração lateral direita — oculta no mobile */}
         <motion.div
@@ -140,7 +140,6 @@ export default function Home({ start = true }: { start?: boolean }) {
               viewBox="0 0 320 110" fill="none" stroke="white" strokeWidth="1.2" strokeLinecap="round"
             >
               <path d="M20 12 L29 5 L38 12" strokeLinejoin="round" />
-              {/* Tracejado animado percorrendo a curva em direção à foto */}
               <motion.path
                 d="M30 20 C15 48 38 76 66 83 C96 91 117 68 143 48 C169 28 193 12 219 9 C245 6 265 19 282 32 C296 43 307 37 60 "
                 strokeDasharray="10 11"

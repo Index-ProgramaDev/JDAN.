@@ -25,11 +25,6 @@ export function ProjectDetail({ projeto, index, total, revealing, onPrev, onNext
     ] as const
   ).filter(([url]) => url && url !== "#");
 
-  const fields = [
-    ["Problema", projeto.problema, "mt-4"],
-    ["Solução", projeto.solucao, "mt-3"],
-  ] as const;
-
   return (
     <div className="relative flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_32px_rgba(0,0,0,0.4)] backdrop-blur-sm max-md:!h-auto">
       <AnimatePresence mode="wait">
@@ -80,26 +75,17 @@ export function ProjectDetail({ projeto, index, total, revealing, onPrev, onNext
             <h3 className="mt-1.5 text-xl font-medium lg:text-2xl">{projeto.titulo}</h3>
             <p className="mt-2 text-[0.82rem] leading-snug text-white/60">{projeto.descricao}</p>
 
-            {fields.map(([label, text, mt]) =>
-              text && (
-                <section key={label} className={mt}>
-                  <h4 className={H4}>{label}</h4>
-                  <p className="mt-1 text-[0.8rem] leading-snug text-white/70">{text}</p>
-                </section>
-              )
-            )}
-
             <section className="mt-4">
               <h4 className={H4}>Stack</h4>
               <ul className="mt-2 flex flex-wrap gap-2.5">
                 {projeto.techs.map((tech) => {
                   const t = getTechIcon(tech);
                   return t ? (
-                    <li key={tech} title={tech} style={{ backgroundColor: `${t.color}1F`, borderColor: `${t.color}59` }} className="flex h-11 w-11 items-center justify-center rounded-full border transition-all hover:scale-110">
+                    <li key={tech} title={tech} style={{ backgroundColor: `${t.color}1F`, borderColor: `${t.color}59` }} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-all hover:scale-110">
                       <t.Icon aria-label={tech} className="h-6 w-6" style={{ color: t.color }} />
                     </li>
                   ) : (
-                    <li key={tech} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[0.68rem] text-white/70">
+                    <li key={tech} className="max-w-[8rem] rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-center text-[0.68rem] leading-tight text-white/70 break-words">
                       {tech}
                     </li>
                   );

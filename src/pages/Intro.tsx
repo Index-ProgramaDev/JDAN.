@@ -54,7 +54,7 @@ export default function Intro() {
   return (
     <main className="min-h-screen bg-[var(--bgcolor)] text-white">
       <div className="min-h-screen">
-        <Home start={phase >= 3} />
+        <Home start={phase >= 3} showNav={phase >= 4} />
       </div>
 
       {phase < 4 && (

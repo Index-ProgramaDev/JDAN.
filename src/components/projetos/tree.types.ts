@@ -2,11 +2,9 @@ export type Project = {
   id: string;
   title: string;
   description: string;
-  problem: string;
-  solution: string;
   stack: string[];
   image: string;
-  links?: { label: string; href: string }[];
+  links?: { label: string; href?: string; disabled?: boolean }[];
 };
 
 export type ProjectCategory = {

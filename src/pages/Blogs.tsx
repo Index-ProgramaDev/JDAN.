@@ -1,16 +1,36 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import Navbar from "../components/Navbar";
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzeewwpv";
+
 export default function Blogs({ start = true }: { start?: boolean }) {
   const [email, setEmail] = useState("");
-  const [inscrito, setInscrito] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email) {
-      setInscrito(true);
+
+    if (status === "sending") return;
+    setStatus("sending");
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        body: new FormData(e.currentTarget),
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        setStatus("error");
+        return;
+      }
+
+      setStatus("success");
       setEmail("");
+    } catch (error) {
+      console.error("Falha ao enviar inscrição para o Formspree:", error);
+      setStatus("error");
     }
   };
 
@@ -46,14 +66,20 @@ export default function Blogs({ start = true }: { start?: boolean }) {
           </p>
 
           <div className="mt-7">
-            {inscrito ? (
-              <div className="rounded-xl bg-[#7ED957]/10 p-4 text-sm font-medium text-[#7ED957] border border-[#7ED957]/20">
-                Obrigado! Você será avisado quando o primeiro artigo for lançado. 🚀
+            {status === "success" ? (
+              <div className="rounded-xl bg-[#7ED957]/10 p-4 text-sm font-medium text-[var(--green)] border border-[#7ED957]/20">
+                Obrigado! Você será avisado quando o primeiro artigo for lançado ;)
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+              <form
+                action={FORMSPREE_ENDPOINT}
+                method="POST"
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-3 sm:flex-row"
+              >
                 <input
                   type="email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Seu melhor e-mail"
@@ -62,10 +88,16 @@ export default function Blogs({ start = true }: { start?: boolean }) {
                 />
                 <button
                   type="submit"
+                  disabled={status === "sending"}
                   className="rounded-xl bg-[#7ED957] px-6 py-3 text-sm font-bold text-[#1B1D1F] transition-transform hover:scale-105 active:scale-95"
                 >
-                  Avise-me
+                  {status === "sending" ? "Enviando..." : "Avise-me"}
                 </button>
+                {status === "error" && (
+                  <p className="text-sm text-red-300 sm:basis-full" role="alert">
+                    Não foi possível enviar agora. Verifique sua conexão e tente novamente.
+                  </p>
+                )}
               </form>
             )}
           </div>
